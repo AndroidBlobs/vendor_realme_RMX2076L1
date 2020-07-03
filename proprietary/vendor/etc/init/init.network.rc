@@ -1,0 +1,22 @@
+
+#Zhengpeng@OnLineRD.AirService.RIL, 2013/11/4, Add for create opponvitems dir
+on boot
+    mkdir /data/opponvitems  0771 radio radio
+    write /proc/sys/fs/suid_dumpable 1
+    setprop persist.vendor.radio.force_on_dc true
+    chmod 0664 /dev/mdmreason
+    chown system system /dev/mdmreason
+#endif
+
+#ifdefVENDOR_EDIT
+#Weidong.Chen@PSW.NW.RF, 2020.1.16
+#Add for modem dump file permission
+service chmod_sdx55m /vendor/bin/sh /vendor/bin/init.network.minidump.sh
+    class core
+    user root
+    group root
+    oneshot
+
+on property:vendor.dump_permission=1
+    start chmod_sdx55m
+#endif
